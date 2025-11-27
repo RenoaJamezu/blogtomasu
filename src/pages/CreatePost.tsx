@@ -1,23 +1,69 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TipTapEditor from '../components/TipTapEditor';
+import toast, { Toaster } from 'react-hot-toast';
 
 function CreatePost() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
+  const nav = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(title);
-    console.log(content);
+    setLoading(true);
+
+    if (!user) {
+      toast.error('Login first');
+      setLoading(false);
+      return;
+    }
+
+    if (!title || !content) {
+      toast.error('Please fill all the information');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/v1/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          title,
+          content,
+        })
+      })
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message || 'Try Again')
+        setLoading(false);
+        return
+      }
+
+      toast.success('Blog posted!');
+
+      nav('/');
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+
     setLoading(false);
   }
 
   return (
     <main>
       <Navbar />
+      <Toaster />
       <section className="flex px-10 items-center pt-16 justify-center">
         <form
           onSubmit={handleSubmit}
