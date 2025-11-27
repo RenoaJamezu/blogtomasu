@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import logo from "../../public/images/logo.png"
+import logo from "../assets/logo.png"
 import { useEffect, useState } from "react"
 import toast, { Toaster } from "react-hot-toast";
 
@@ -45,9 +45,9 @@ function Navbar() {
   }
 
   return (
-    <header className={`fixed top-0 w-full h-24 transition-colors px-10 flex justify-between bg-white ${scrolled
-        ? "backdrop-blur-xs bg-white/50 border-b border-neutral-500/50"
-        : "bg-transparent border-transparent"
+    <header className={`fixed top-0 w-full h-16 z-50 transition-colors px-10 flex justify-between bg-white border-b border-black/30 ${scrolled
+        ? "backdrop-blur-xs bg-white/50"
+        : "bg-transparent"
       }`}>
       <Toaster />
       <Link to='/' className="flex items-center">
@@ -60,15 +60,15 @@ function Navbar() {
       </Link>
 
       <nav className="flex items-center gap-5">
-        <Link to='/' className="font-intertight text-gray-500 font-bold text-sm">
+        <Link to='/' className="font-intertight text-black/50 font-bold text-sm">
           Home
         </Link>
-        <Link to='/create' className="font-intertight text-gray-500 font-bold text-sm">
+        <Link to='/create' className="font-intertight text-black/50 font-bold text-sm">
           Write
         </Link>
         {!user ? (
           <div className="flex items-center gap-5">
-            <Link to='/login' className="font-intertight text-gray-500 font-bold text-sm">
+            <Link to='/login' className="font-intertight text-black/50 font-bold text-sm">
               Login
             </Link>
             <Link to='/signup' className="font-intertight text-white font-bold text-sm bg-primary px-4 py-3 rounded-lg hover:bg-primary/90">

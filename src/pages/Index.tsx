@@ -1,12 +1,13 @@
 import Navbar from '../components/Navbar'
 import Home from './Home'
+import Stories from './Stories'
 
 function Index() {
   return (
     <main className="h-screen">
       <Navbar />
       <Home />
-      <section className="h-screen"></section>
+      <Stories />
     </main>
   )
 }

@@ -5,7 +5,7 @@ function Home() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
 
   return (
-    <section className="flex bg-primary px-10 h-screen items-center pt-24">
+    <section className="flex bg-primary px-10 h-screen items-center pt-16">
       <div className="flex flex-col gap-5">
         <h1 className="font-merriweather text-6xl font-bold text-white">
           Share Your Story with<br />
