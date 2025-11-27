@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -7,10 +7,12 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const nav = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
     if (!email || !password) {
       toast.error('Please fill in both fields.');
       setLoading(false);
@@ -30,10 +32,10 @@ function Login() {
         }),
       });
 
-      const json = await res.json();
+      const data = await res.json();
 
       if (!res.ok) {
-        toast.error(json.message);
+        toast.error(data.message);
         setLoading(false);
         return;
       }
@@ -41,9 +43,9 @@ function Login() {
       toast.success('Logged in');
 
       // store information to local storage
-      localStorage.setItem('user', JSON.stringify(json))
+      localStorage.setItem('user', JSON.stringify(data))
 
-      window.location.href = '/';
+      nav('/')
     } catch (error) {
       console.log(error);
       setLoading(false)

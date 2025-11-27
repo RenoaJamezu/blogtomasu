@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FaAngleLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const [name, setName] = useState('')
@@ -9,6 +9,7 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
+  const nav = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,10 +46,10 @@ function Signup() {
         }),
       });
 
-      const json = await res.json();
+      const data = await res.json();
       
       if (!res.ok) {
-        toast.error(json.message);
+        toast.error(data.message);
         setLoading(false);
         return;
       }
@@ -56,9 +57,9 @@ function Signup() {
       toast.success('Account created')
 
       // store information to local storage
-      localStorage.setItem('user', JSON.stringify(json))
+      localStorage.setItem('user', JSON.stringify(data))
       
-      window.location.href = '/';
+      nav('/');
     } catch (error) {
       console.log(error);
       setLoading(false);
