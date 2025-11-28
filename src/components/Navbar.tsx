@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom"
 import logo from "../assets/logo.png"
 import { useEffect, useState } from "react"
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { FaUserCircle } from "react-icons/fa";
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   const [scrolled, setScrolled] = useState(false);
+  const [profile, setProfile] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -44,12 +46,16 @@ function Navbar() {
     }
   }
 
+  const handleProfile = async () => {
+    setProfile(!profile);
+    console.log(profile);
+  }
+
   return (
     <header className={`fixed top-0 w-full h-16 z-50 transition-colors px-10 flex justify-between bg-white border-b border-black/30 ${scrolled
-        ? "backdrop-blur-xs bg-white/50"
-        : "bg-transparent"
+      ? "backdrop-blur-xs bg-white/50"
+      : "bg-transparent"
       }`}>
-      <Toaster />
       <Link to='/' className="flex items-center">
         <img
           src={logo}
@@ -76,13 +82,32 @@ function Navbar() {
             </Link>
           </div>
         ) : (
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="font-intertight text-white font-bold text-sm bg-primary px-4 py-3 rounded-lg hover:bg-primary/90"
-          >
-            Logout
-          </button>
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={handleProfile}
+            >
+              <FaUserCircle className="text-3xl text-primary hover:text-primary/80" />
+            </button>
+          </div>
+        )}
+        {profile && (
+          <div className="absolute right-10 top-14 w-40 bg-white shadow-lg rounded-lg border py-2 animate-fadeIn">
+            <Link
+              to="/profile"
+              className="block px-4 py-2 font-intertight text-sm text-black/80 hover:bg-gray-100"
+            >
+              Profile
+            </Link>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full text-left block px-4 py-2 font-intertight text-sm text-red-500 hover:bg-red-50"
+            >
+              Logout
+            </button>
+          </div>
         )}
       </nav>
     </header>

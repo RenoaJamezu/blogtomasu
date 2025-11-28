@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -54,7 +54,6 @@ function Login() {
 
   return (
     <main className="flex items-center justify-center h-screen bg-secondary/10">
-      <Toaster />
       <div className="border border-neutral-500/50 p-10 rounded-lg w-1/3 bg-white shadow">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">

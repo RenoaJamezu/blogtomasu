@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import TipTapEditor from '../components/TipTapEditor';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 function CreatePost() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -63,7 +63,6 @@ function CreatePost() {
   return (
     <main>
       <Navbar />
-      <Toaster />
       <section className="flex px-10 items-center pt-16 justify-center">
         <form
           onSubmit={handleSubmit}

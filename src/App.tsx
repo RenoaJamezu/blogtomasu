@@ -4,17 +4,31 @@ import Index from './pages/Index'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import CreatePost from './pages/CreatePost'
+import { Toaster } from 'react-hot-toast'
+import ProtectedRoutes from './utils/ProtectedRoutes'
+import Profile from './pages/Profile'
+import Authenticated from './utils/Authenticated'
 
 function App() {
 
   return (
     <>
+      <Toaster />
       <Router>
         <Routes>
           <Route path='/' element={<Index />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route path='/create' element={<CreatePost />}/>
+
+          {/* authenticated */}
+          <Route element={<Authenticated />} >
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+          </Route>
+
+          {/* protected routes */}
+          <Route element={<ProtectedRoutes />} >
+            <Route path='/create' element={<CreatePost />} />
+            <Route path='/profile' element={<Profile />} />
+          </Route>
         </Routes>
       </Router>
     </>
