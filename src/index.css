@@ -12,21 +12,46 @@
   --font-merriweather: "Merriweather", serif;
 }
 
-.tiptap-content h1 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 700; }
-.tiptap-content h2 { font-size: 1.5rem; line-height: 2rem; font-weight: 600; }
+/* headings use Merriweather */
+.tiptap-content h1,
+.tiptap-content h2 {
+  font-family: var(--font-merriweather);
+}
+
+/* lists and list items use Inter Tight */
+.tiptap-content ul,
+.tiptap-content ol,
+.tiptap-content li {
+  font-family: var(--font-intertight);
+}
+
+.tiptap-content h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+}
+
+.tiptap-content h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+}
 
 .tiptap-content ul {
   list-style-type: disc;
   list-style-position: outside;
-  padding-left: 1.5rem; /* indent */
+  padding-left: 1.5rem;
+  /* indent */
   margin: 0 0 0.75rem 0;
 }
+
 .tiptap-content ol {
   list-style-type: decimal;
   list-style-position: outside;
   padding-left: 1.5rem;
   margin: 0 0 0.75rem 0;
 }
+
 .tiptap-content li {
   margin: 0.25rem 0;
 }

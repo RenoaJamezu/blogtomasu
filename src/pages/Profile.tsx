@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { IoLocationOutline } from 'react-icons/io5'
 import { FaCalendarAlt } from 'react-icons/fa'

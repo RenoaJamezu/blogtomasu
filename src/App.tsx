@@ -8,6 +8,8 @@ import { Toaster } from 'react-hot-toast'
 import ProtectedRoutes from './utils/ProtectedRoutes'
 import Profile from './pages/Profile'
 import Authenticated from './utils/Authenticated'
+import Stories from './pages/Stories'
+import BlogPost from './pages/BlogPost'
 
 function App() {
 
@@ -16,6 +18,7 @@ function App() {
       <Toaster />
       <Router>
         <Routes>
+          {/* public routes */}
           <Route path='/' element={<Index />} />
 
           {/* authenticated */}
@@ -28,6 +31,8 @@ function App() {
           <Route element={<ProtectedRoutes />} >
             <Route path='/create' element={<CreatePost />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/stories' element={<Stories />} />
+            <Route path='/posts/:id' element={<BlogPost />} />
           </Route>
         </Routes>
       </Router>
