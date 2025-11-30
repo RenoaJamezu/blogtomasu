@@ -20,6 +20,7 @@ function App() {
         <Routes>
           {/* public routes */}
           <Route path='/' element={<Index />} />
+          <Route path='/posts/:id' element={<BlogPost />} />
 
           {/* authenticated */}
           <Route element={<Authenticated />} >
@@ -32,7 +33,6 @@ function App() {
             <Route path='/create' element={<CreatePost />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/stories' element={<Stories />} />
-            <Route path='/posts/:id' element={<BlogPost />} />
           </Route>
         </Routes>
       </Router>
