@@ -35,7 +35,7 @@ function Stories() {
   }, []);
 
   return (
-    <section className="flex flex-col bg-white px-10 h-auto items-start py-24">
+    <section className="flex flex-col bg-white px-10 h-screen items-start py-24">
       <h1 className="font-merriweather font-bold text-5xl">
         Latest Stories
       </h1>
