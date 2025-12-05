@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { AuthRequest } from "../middlewares/auth.middleware";
 
 export async function signup(req: Request, res: Response) {
   try {
@@ -90,4 +91,12 @@ export async function login(req: Request, res: Response) {
   }
 }
 
-export default { signup, login };
+export async function logout(req: AuthRequest, res: Response) {
+  try {
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Logout failed" });
+  }
+}
+
+export default { signup, login, logout };
