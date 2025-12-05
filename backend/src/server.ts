@@ -1,10 +1,12 @@
-import express from "express";
+import app from "./app";
+import { connectDB } from "./config/database";
 
-const app = express();
+const port = process.env['PORT'] || 3000;
 
-// route
-app.get('/', (req, res) => {
-  res.send("Welcome to BlogTomasu");
+connectDB().catch((err) => {
+  console.log(err);
 });
 
-export default app;
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
