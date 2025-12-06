@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Index from './pages/Index'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
-import CreatePost from './pages/CreatePost'
 import { Toaster } from 'react-hot-toast'
 import ProtectedRoutes from './utils/ProtectedRoutes'
 import Profile from './pages/Profile'
 import Authenticated from './utils/Authenticated'
 import Stories from './pages/Stories'
+import CreateBlog from './pages/CreatePost'
 import BlogPost from './pages/BlogPost'
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
         <Routes>
           {/* public routes */}
           <Route path='/' element={<Index />} />
-          <Route path='/posts/:id' element={<BlogPost />} />
+          <Route path='/blogs/:id' element={<BlogPost />} />
 
           {/* authenticated */}
           <Route element={<Authenticated />} >
@@ -30,7 +30,7 @@ function App() {
 
           {/* protected routes */}
           <Route element={<ProtectedRoutes />} >
-            <Route path='/create' element={<CreatePost />} />
+            <Route path='/create' element={<CreateBlog />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/stories' element={<Stories />} />
           </Route>

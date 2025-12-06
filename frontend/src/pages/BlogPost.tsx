@@ -4,71 +4,76 @@ import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
 
-interface Post {
-  id: number;
+interface Blog {
+  _id: string;
   title: string;
   content: string;
-  author: { name: string, email: string };
-  created_at: string;
+  author: { 
+    name: string, 
+    email: string,
+  };
+  createdAt: string;
+  updatedAt: string;
 }
 
 function BlogPost() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   const { id } = useParams<{ id: string }>();
-  const [post, setPost] = useState<Post | null>(null);
+  const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const nav = useNavigate();
 
   useEffect(() => {
     if (!id) return;
-    const fetchPost = async () => {
+    const fetchBlog = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/v1/posts/${id}`);
+        const res = await fetch(`/api/blogs/${id}`);
         const data = await res.json();
-        console.log(data);
         if (!res.ok) {
-          toast.error(data?.message || "Failed to load post");
+          toast.error(data?.message || "Failed to load blog");
           setLoading(false);
           return;
         }
-        const fetched = data?.data ?? data;
 
-        setPost(fetched);
+        setBlog(data);
       } catch (err) {
         console.error(err);
-        toast.error("Failed to load post.");
+        toast.error("Failed to load blog.");
       } finally {
         setLoading(false);
       }
     };
-    fetchPost();
+    fetchBlog();
   }, [id]);
 
-  const isOwner = Boolean(user.user.email === post?.author.email);
+  const isOwner = Boolean(user?.user?.email === blog?.author.email);
 
   const handleEdit = async () => {
-
+    // TODO: implement edit
   }
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`/api/v1/posts/${id}`, {
+      const res = await fetch(`/api/blogs/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': `Bearer ${user.token}`,
+          'Authorization': `Bearer${user.token}`,
         },
       })
 
       if (!res.ok) {
+        toast.error("Failed to delete blog");
         return;
       }
 
+      toast.success("Blog deleted");
       nav('/');
     } catch (err) {
       console.log(err);
+      toast.error("Error deleting blog");
     }
   }
 
@@ -79,14 +84,14 @@ function BlogPost() {
     </main>
   );
 
-  if (!post) return (
+  if (!blog) return (
     <main className="h-screen">
       <Navbar />
-      <div className="pt-16 px-10">Post not found.</div>
+      <div className="pt-16 px-10">Blog not found.</div>
     </main>
   );
 
-  const formattedDate = new Date(post.created_at).toLocaleDateString('en-US', {
+  const formattedDate = new Date(blog.createdAt).toLocaleDateString('en-US', {
     month: 'short', day: 'numeric', year: 'numeric'
   });
 
@@ -95,10 +100,10 @@ function BlogPost() {
       <Navbar />
       <section className="py-16 w-2/4">
         <article className="w-full items-center mt-10">
-          <h1 className="font-merriweather text-4xl font-bold mb-3">{post.title}</h1>
+          <h1 className="font-merriweather text-4xl font-bold mb-3">{blog.title}</h1>
           <div className="text-sm text-gray-500 mb-6 flex font-intertight items-center justify-between">
             <div className="flex">
-              <span className="mr-4 flex items-center gap-1"><FaUser />{post.author.name}</span>
+              <span className="mr-4 flex items-center gap-1"><FaUser />{blog.author.name}</span>
               <span className="flex items-center gap-1"><FaCalendarAlt />{formattedDate}</span>
             </div>
 
@@ -110,20 +115,20 @@ function BlogPost() {
                   onClick={handleEdit}
                   className="px-3 py-1 border text-black/80 rounded hover:bg-gray-500/20"
                 >
-                  Edit post
+                  Edit blog
                 </button>
                 <button
                   type="button"
                   onClick={handleDelete}
                   className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-500/80"
                 >
-                  Delete post
+                  Delete blog
                 </button>
               </div>
             )}
           </div>
           <hr className="text-black/50" /><br />
-          <div className="prose tiptap-content max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div className="prose tiptap-content max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }} />
         </article>
       </section>
     </main>
