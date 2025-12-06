@@ -3,13 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
+import ConfirmModal from "../components/ui/confirmModal";
 
 interface Blog {
   _id: string;
   title: string;
   content: string;
-  author: { 
-    name: string, 
+  author: {
+    name: string,
     email: string,
   };
   createdAt: string;
@@ -19,8 +20,9 @@ interface Blog {
 function BlogPost() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   const { id } = useParams<{ id: string }>();
-  const [blog, setBlog] = useState<Blog | null>(null);
+  const [blog, setBlog] = useState<Blog>();
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -37,8 +39,8 @@ function BlogPost() {
         }
 
         setBlog(data);
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.log(error);
         toast.error("Failed to load blog.");
       } finally {
         setLoading(false);
@@ -50,7 +52,7 @@ function BlogPost() {
   const isOwner = Boolean(user?.user?.email === blog?.author.email);
 
   const handleEdit = async () => {
-    // TODO: implement edit
+    nav(`/blogs/${id}/edit`);
   }
 
   const handleDelete = async () => {
@@ -70,9 +72,10 @@ function BlogPost() {
       }
 
       toast.success("Blog deleted");
+      setShowDeleteModal(false);
       nav('/');
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
       toast.error("Error deleting blog");
     }
   }
@@ -113,14 +116,14 @@ function BlogPost() {
                 <button
                   type="button"
                   onClick={handleEdit}
-                  className="px-3 py-1 border text-black/80 rounded hover:bg-gray-500/20"
+                  className="px-3 py-2 border text-black/80 rounded hover:bg-gray-500/20"
                 >
                   Edit blog
                 </button>
                 <button
                   type="button"
-                  onClick={handleDelete}
-                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-500/80"
+                  onClick={() => setShowDeleteModal(true)}
+                  className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-500/80"
                 >
                   Delete blog
                 </button>
@@ -131,6 +134,16 @@ function BlogPost() {
           <div className="prose tiptap-content max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }} />
         </article>
       </section>
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title="Delete Blog"
+        message="Are you sure you want to delete this blog?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDangerous={true}
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </main>
   );
 }

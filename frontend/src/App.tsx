@@ -10,6 +10,7 @@ import Authenticated from './utils/Authenticated'
 import Stories from './pages/Stories'
 import CreateBlog from './pages/CreatePost'
 import BlogPost from './pages/BlogPost'
+import EditPost from './pages/EditPost'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
           {/* protected routes */}
           <Route element={<ProtectedRoutes />} >
             <Route path='/create' element={<CreateBlog />} />
+            <Route path='/blogs/:id/edit' element={<EditPost />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/stories' element={<Stories />} />
           </Route>

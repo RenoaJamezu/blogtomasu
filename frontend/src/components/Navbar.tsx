@@ -3,11 +3,13 @@ import logo from "../assets/logo.png"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
 import { FaUserCircle } from "react-icons/fa";
+import ConfirmModal from "./ui/confirmModal";
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   const [scrolled, setScrolled] = useState(false);
   const [profile, setProfile] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -16,8 +18,7 @@ function Navbar() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const handleLogout = async () => {
 
     try {
       const res = await fetch('/api/auth/logout', {
@@ -40,6 +41,8 @@ function Navbar() {
 
       localStorage.removeItem('user');
 
+      setShowLogoutModal(false);
+
       window.location.href = '/';
     } catch (error) {
       console.log(error);
@@ -48,7 +51,6 @@ function Navbar() {
 
   const handleProfile = async () => {
     setProfile(!profile);
-    console.log(profile);
   }
 
   return (
@@ -102,7 +104,7 @@ function Navbar() {
 
             <button
               type="button"
-              onClick={handleLogout}
+              onClick={() => setShowLogoutModal(true)}
               className="w-full text-left block px-4 py-2 font-intertight text-sm text-red-500 hover:bg-red-50"
             >
               Logout
@@ -110,6 +112,16 @@ function Navbar() {
           </div>
         )}
       </nav>
+      <ConfirmModal
+        isOpen={showLogoutModal}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        confirmText="Logout"
+        cancelText="Cancel"
+        isDangerous={true}
+        onConfirm={handleLogout}
+        onCancel={() => setShowLogoutModal(false)}
+      />
     </header>
   )
 }
