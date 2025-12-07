@@ -159,6 +159,7 @@ function Navbar() {
                 <button
                   type="button"
                   className="text-red-500 text-left"
+                  onClick={() => setShowLogoutModal(true)}
                 >
                   Logout
                 </button>
