@@ -104,8 +104,8 @@ function BlogPost() {
       <Navbar />
       <section className="py-16 px-4 md:w-2/4">
         <article className="w-full items-center mt-10">
-          <h1 className="font-merriweather text-4xl font-bold mb-3">{blog.title}</h1>
-          <div className="text-sm text-gray-500 mb-6 md:flex font-intertight items-center justify-between space-y-4">
+          <h1 className="font-merriweather text-xl md:text-4xl font-bold mb-3">{blog.title}</h1>
+          <div className="text-xs md:text-sm text-gray-500 mb-6 md:flex font-intertight items-center justify-between space-y-4">
             <div className="flex">
               <span className="mr-4 flex items-center gap-1"><FaUser />{blog.author.name}</span>
               <span className="flex items-center gap-1"><FaCalendarAlt />{formattedDate}</span>
