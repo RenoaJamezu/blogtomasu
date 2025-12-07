@@ -14,6 +14,8 @@ export const connectDB = async (): Promise<void> => {
 
     await mongoose.connect(mongoURI);
 
+    console.log("Database connected");
+
     process.on('SIGINT', async () => {
       await mongoose.connection.close();
       process.exit(0);
