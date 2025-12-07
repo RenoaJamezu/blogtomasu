@@ -5,8 +5,8 @@ import toast from "react-hot-toast";
 import { apiUrl } from "../../utils/api";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate()
 
@@ -15,17 +15,18 @@ function Login() {
     setLoading(true);
 
     if (!email || !password) {
-      toast.error('Please fill in both fields.');
+      toast.error("Please fill in both fields.");
       setLoading(false);
       return;
     }
-    
+
     try {
       const res = await fetch(`${apiUrl}/api/auth/login`, {
-        method: 'POST',
+        method: "POST",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify({
           email,
@@ -36,17 +37,18 @@ function Login() {
       const data = await res.json();
 
       if (!res.ok) {
+        if (res.status === 403) nav("/otp", { state: { email } });
         toast.error(data.message);
         setLoading(false);
         return;
       }
 
-      toast.success('Logged in');
+      toast.success("Logged in");
 
       // store information to local storage
-      localStorage.setItem('user', JSON.stringify(data))
+      localStorage.setItem("user", JSON.stringify({ email }));
 
-      nav('/')
+      nav("/")
     } catch (error) {
       console.log(error);
       setLoading(false)
@@ -60,7 +62,7 @@ function Login() {
           <div className="flex flex-col">
             <h1 className="text-lg md:text-2xl font-merriweather">Welcome to <span className="text-primary font-bold">Blog</span><span className="text-secondary font-bold">Tomasu</span></h1>
           </div>
-          <Link to='/' className="text-lg md:text-2xl p-1 text-primary hover:text-primary/90">
+          <Link to="/" className="text-lg md:text-2xl p-1 text-primary hover:text-primary/90">
             <FaAngleLeft />
           </Link>
         </div>
@@ -96,12 +98,12 @@ function Login() {
             type="submit"
             className="w-full items-center bg-primary p-3 rounded-lg mt-2 font-bold font-intertight text-xs md:text-sm text-white hover:bg-primary/90"
           >
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
 
           <p className="font-intertight text-xs md:text-sm text-gray-500">
             Dont have an account?
-            <Link to='/signup' className="text-primary font-bold hover:text-primary/90">
+            <Link to="/signup" className="text-primary font-bold hover:text-primary/90">
               Sign up.
             </Link>
           </p>

@@ -11,6 +11,7 @@ import Stories from './pages/Stories'
 import CreateBlog from './pages/CreatePost'
 import BlogPost from './pages/BlogPost'
 import EditPost from './pages/EditPost'
+import Otp from './pages/auth/Otp'
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route element={<Authenticated />} >
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
+            <Route path='/otp' element={<Otp />} />
           </Route>
 
           {/* protected routes */}

@@ -4,6 +4,9 @@ export interface IUser extends Document {
   name: string;
   email: string;
   passwordHash: string;
+  otp: string;
+  otpExpire: Date;
+  isVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -25,7 +28,17 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     passwordHash: {
       type: String,
       required: true
-    }
+    },
+    otp: {
+      type: String,
+    },
+    otpExpire: {
+      type: Date,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true

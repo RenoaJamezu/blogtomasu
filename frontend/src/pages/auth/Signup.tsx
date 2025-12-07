@@ -35,6 +35,7 @@ function Signup() {
     try {
       const res = await fetch(`${apiUrl}/api/auth/signup`, {
         method: 'POST',
+        credentials: "include",
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -43,7 +44,6 @@ function Signup() {
           name,
           email,
           password,
-          password_confirmation: confirm,
         }),
       });
 
@@ -55,12 +55,9 @@ function Signup() {
         return;
       }
 
-      toast.success('Account created')
-
-      // store information to local storage
-      localStorage.setItem('user', JSON.stringify(data))
+      toast.success("OTP sent! Check your email");
       
-      nav('/');
+      nav('/otp', { state: { email } });
     } catch (error) {
       console.log(error);
       setLoading(false);
