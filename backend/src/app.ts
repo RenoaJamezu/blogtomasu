@@ -19,10 +19,6 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 // route
-app.get("/", (req, res) => {
-  res.send("Welcome to BlogTomasu");
-});
-
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes);
 
