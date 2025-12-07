@@ -40,6 +40,7 @@ function Otp() {
       console.log(res);
       if (!res.ok) {
         toast.error("Verification failed");
+        setLoading(false);
         return;
       }
 

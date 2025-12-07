@@ -141,6 +141,7 @@ export async function login(req: Request, res: Response) {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
+      domain: process.env["NODE_ENV"],
       maxAge: 1000 * 60 * 60 * 24,
     });
 
