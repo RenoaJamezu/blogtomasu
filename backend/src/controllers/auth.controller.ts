@@ -9,6 +9,9 @@ import crypto from "crypto";
 // email transporter set up
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  pool: true,
+  maxConnections: 1,
+  maxMessages: 5,
   auth: {
     user: "jamerolenor@gmail.com",
     pass: "yyedwelszskkjsty"
@@ -37,12 +40,12 @@ export async function signup(req: Request, res: Response) {
     const otp = generateOTP();
     const otpExpire = new Date(Date.now() + 10 * 60 * 1000);
 
-    await transporter.sendMail({
+    const sendOtpPromise = transporter.sendMail({
       from: "jamerolenor@gmail.com",
       to: email,
       subject: "OTP Verification",
       text: `Your OTP is ${otp}`
-    });
+    }).catch((err) => console.error("Failed to send OTP email", err));
 
     await User.create({
       name,
@@ -51,6 +54,8 @@ export async function signup(req: Request, res: Response) {
       otp,
       otpExpire
     });
+
+    void sendOtpPromise;
 
     return res.status(201).json({ message: "User registered. Please verify OTP sent to email" });
   } catch (error) {
