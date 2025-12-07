@@ -17,12 +17,12 @@ function Home() {
         </p>
 
         <div className="flex gap-5 mt-5">
-          <Link to='/create' className="flex items-center gap-3 text-sm md:text-lg bg-white rounded-lg px-8 py-3 hover:bg-gray-200">
+          <Link to='/create' className="flex items-center gap-3 text-sm md:text-lg bg-white rounded-lg px-4 md:px-8 py-3 hover:bg-gray-200">
             Start Writing
             <FaArrowRight />
           </Link>
           {!user && (
-            <Link to='/login' className="flex items-center gap-3 text-lg bg-primary rounded-lg px-8 py-3 text-white outline hover:bg-blue-800">
+            <Link to='/login' className="flex items-center gap-3 text-sm md:text-lg bg-primary rounded-lg px-4 md:px-8 py-3 text-white outline hover:bg-blue-800">
               Sign in
             </Link>
           )}

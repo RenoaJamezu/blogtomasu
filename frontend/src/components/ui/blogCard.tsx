@@ -23,19 +23,19 @@ function BlogCard({ blog }: { blog: BlogCardProps}) {
   return (
     <Link to={`/blogs/${blog._id}`} className="block">
       <article className="bg-white rounded-2xl border border-black/50 p-5 shadow-sm overflow-hidden hover:shadow-md transition">
-        <h2 className="text-2xl font-merriweather font-bold mb-2 line-clamp-2">{blog.title}</h2>
-        <div className="flex items-center text-sm text-gray-500 mb-3 space-x-5">
-          <span className="flex items-center gap-1 text-sm font-intertight">
+        <h2 className="text-lg md:text-2xl font-merriweather font-bold mb-2 line-clamp-2">{blog.title}</h2>
+        <div className="flex items-center text-gray-500 mb-3 space-x-5">
+          <span className="flex items-center gap-1 text-xs md:text-sm font-intertight">
             <FaUser />
             {blog.author.name}
           </span>
-          <span className="flex items-center gap-1 text-sm font-intertight">
+          <span className="flex items-center gap-1 text-xs md:text-sm font-intertight">
             <FaCalendarAlt />
             {formattedDate}
           </span>
         </div>
         <div
-          className="text-gray-700 line-clamp-4 mt-5 font-intertight text-lg"
+          className="text-gray-700 line-clamp-4 mt-5 font-intertight text-sm md:text-lg"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
       </article>
