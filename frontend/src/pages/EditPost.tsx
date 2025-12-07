@@ -70,10 +70,10 @@ function EditPost() {
     try {
       const res = await fetch(`${apiUrl}/api/blogs/${id}`, {
         method: "PUT",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          "Authorization": `Bearer${user.token}`,
         },
         body: JSON.stringify({
           title,

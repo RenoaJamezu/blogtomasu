@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
 import ConfirmModal from "../components/ui/confirmModal";
 import { apiUrl } from "../utils/api";
+import useAuth from "../hooks/useAuth";
 
 interface Blog {
   _id: string;
@@ -19,7 +20,7 @@ interface Blog {
 }
 
 function BlogPost() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const user = useAuth();
   const { id } = useParams<{ id: string }>();
   const [blog, setBlog] = useState<Blog>();
   const [loading, setLoading] = useState(true);
@@ -60,10 +61,10 @@ function BlogPost() {
     try {
       const res = await fetch(`${apiUrl}/api/blogs/${id}`, {
         method: 'DELETE',
+        credentials: "include",
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': `Bearer${user.token}`,
         },
       })
 
@@ -102,7 +103,7 @@ function BlogPost() {
   return (
     <main className="min-h-screen w-full flex justify-center">
       <Navbar />
-      <section className="py-16 px-4 md:w-2/4">
+      <section className="py-16 px-4 w-full md:w-2/4">
         <article className="w-full items-center mt-10">
           <h1 className="font-merriweather text-xl md:text-4xl font-bold mb-3">{blog.title}</h1>
           <div className="text-xs md:text-sm text-gray-500 mb-6 md:flex font-intertight items-center justify-between space-y-4">

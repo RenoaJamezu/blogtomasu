@@ -5,9 +5,10 @@ import toast from "react-hot-toast";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import ConfirmModal from "./ui/confirmModal";
 import { apiUrl } from "../utils/api";
+import useAuth from "../hooks/useAuth";
 
 function Navbar() {
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const { isValid } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -24,10 +25,10 @@ function Navbar() {
     try {
       const res = await fetch(`${apiUrl}/api/auth/logout`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          "Authorization": `Bearer${user.token}`,
         }
       });
 
@@ -82,16 +83,7 @@ function Navbar() {
         <Link to="/create" className="font-intertight text-black/50 font-bold text-sm">
           Write
         </Link>
-        {!user ? (
-          <div className="flex items-center gap-5">
-            <Link to="/login" className="font-intertight text-black/50 font-bold text-sm">
-              Login
-            </Link>
-            <Link to="/signup" className="font-intertight text-white font-bold text-sm bg-primary px-4 py-3 rounded-lg hover:bg-primary/90">
-              Get Started
-            </Link>
-          </div>
-        ) : (
+        {isValid ? (
           <div className="flex items-center">
             <button
               type="button"
@@ -99,6 +91,15 @@ function Navbar() {
             >
               <FaUserCircle className="text-3xl text-primary hover:text-primary/80" />
             </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-5">
+            <Link to="/login" className="font-intertight text-black/50 font-bold text-sm">
+              Login
+            </Link>
+            <Link to="/signup" className="font-intertight text-white font-bold text-sm bg-primary px-4 py-3 rounded-lg hover:bg-primary/90">
+              Get Started
+            </Link>
           </div>
         )}
         {profileOpen && (
@@ -142,16 +143,7 @@ function Navbar() {
               Write
             </Link>
 
-            {!user ? (
-              <>
-                <Link to="/login" onClick={closeMenu}>
-                  Login
-                </Link>
-                <Link to="/create" className="text-white bg-primary py-2 rounded-lg text-center hover:primary/90" onClick={closeMenu}>
-                  Get Started
-                </Link>
-              </>
-            ) : (
+            {isValid ? (
               <>
                 <Link to="/profile" onClick={closeMenu}>
                   Profile
@@ -163,6 +155,15 @@ function Navbar() {
                 >
                   Logout
                 </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" onClick={closeMenu}>
+                  Login
+                </Link>
+                <Link to="/signup" className="text-white bg-primary py-2 rounded-lg text-center hover:primary/90" onClick={closeMenu}>
+                  Get Started
+                </Link>
               </>
             )}
           </nav>

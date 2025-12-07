@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-import { Link, useNavigate } from 'react-router-dom';
-import TipTapEditor from '../components/TipTapEditor';
-import toast from 'react-hot-toast';
-import { apiUrl } from '../utils/api';
+import React, { useState } from "react";
+import Navbar from "../components/Navbar";
+import { Link, useNavigate } from "react-router-dom";
+import TipTapEditor from "../components/TipTapEditor";
+import toast from "react-hot-toast";
+import { apiUrl } from "../utils/api";
+import useAuth from "../hooks/useAuth";
 
 function CreateBlog() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const { isValid } = useAuth();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
@@ -16,25 +17,25 @@ function CreateBlog() {
     e.preventDefault();
     setLoading(true);
 
-    if (!user) {
-      toast.error('Login first');
+    if (isValid === false) {
+      toast.error("Login first");
       setLoading(false);
       return;
     }
 
     if (!title || !content) {
-      toast.error('Please fill all the information');
+      toast.error("Please fill all the information");
       setLoading(false);
       return;
     }
 
     try {
       const res = await fetch(`${apiUrl}/api/blogs`, {
-        method: 'POST',
+        method: "POST",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer${user.token}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify({
           title,
@@ -44,14 +45,14 @@ function CreateBlog() {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.message || 'Try Again')
+        toast.error(data.message || "Try Again")
         setLoading(false);
         return
       }
 
-      toast.success('Blog posted!');
+      toast.success("Blog posted!");
 
-      nav('/');
+      nav("/");
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -94,9 +95,9 @@ function CreateBlog() {
               type="submit"
               className="items-center bg-primary py-3 px-5 rounded-lg mt-2 font-bold font-intertight text-sm text-white hover:bg-primary/90"
             >
-              {loading ? 'Bloging...' : 'Publish blog'}
+              {loading ? "Bloging..." : "Publish blog"}
             </button>
-            <Link to='/' className="items-center py-3 px-5 rounded-lg mt-2 font-bold font-intertight text-sm border border-black/30 hover:bg-gray-200">
+            <Link to="/" className="items-center py-3 px-5 rounded-lg mt-2 font-bold font-intertight text-sm border border-black/30 hover:bg-gray-200">
               Cancel
             </Link>
           </div>
