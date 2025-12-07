@@ -8,7 +8,7 @@ function Index() {
       <Navbar />
       <Home />
       <Stories />
-      <footer className="border-t text-center font-intertight">© lenor james jamero</footer>
+      {/* <footer className="border-t text-center font-intertight">© lenor james jamero</footer> */}
     </main>
   )
 }

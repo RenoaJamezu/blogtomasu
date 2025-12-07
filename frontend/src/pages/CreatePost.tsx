@@ -63,18 +63,18 @@ function CreateBlog() {
   return (
     <main>
       <Navbar />
-      <section className="flex px-10 items-center pt-16 justify-center">
+      <section className="flex px-4 md:px-10 items-center pt-16 justify-center">
         <form
           onSubmit={handleSubmit}
-          className="border border-neutral-500 rounded-lg p-5 w-1/2 space-y-5 my-16"
+          className="border border-neutral-500 rounded-lg p-5 w-full md:w-1/2 space-y-5 my-16"
         >
           <div>
-            <h1 className="font-bold font-merriweather text-4xl">Create a New Blog</h1>
-            <p className="font-intertight text-lg text-black/50">Share your thoughts in the world</p>
+            <h1 className="font-bold font-merriweather text-xl md:text-4xl">Create a New Blog</h1>
+            <p className="font-intertight text-sm md:text-lg text-black/50">Share your thoughts in the world</p>
           </div>
 
           <div>
-            <label className="font-intertight text-lg">Title</label>
+            <label className="font-intertight text-sm md:text-lg">Title</label>
             <input
               type="text"
               value={title}
@@ -85,7 +85,7 @@ function CreateBlog() {
           </div>
 
           <div>
-            <label className="font-intertight text-lg">Content</label>
+            <label className="font-intertight text-sm md:text-lg">Content</label>
             <TipTapEditor content={content} setContent={setContent} />
           </div>
 

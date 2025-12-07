@@ -1,33 +1,33 @@
-import { Link } from "react-router-dom"
-import logo from "../assets/logo.png"
-import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaUserCircle } from "react-icons/fa";
+import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import ConfirmModal from "./ui/confirmModal";
 import { apiUrl } from "../utils/api";
 
 function Navbar() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const user = JSON.parse(localStorage.getItem("user") || "null");
   const [scrolled, setScrolled] = useState(false);
-  const [profile, setProfile] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
-    window.addEventListener("scroll", onScroll)
-    onScroll()
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleLogout = async () => {
-
     try {
       const res = await fetch(`${apiUrl}/api/auth/logout`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer${user.token}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": `Bearer${user.token}`,
         }
       });
 
@@ -38,49 +38,56 @@ function Navbar() {
         return;
       }
 
-      toast.success('Logout successfully');
-
-      localStorage.removeItem('user');
-
+      toast.success("Logout successfully");
+      localStorage.removeItem("user");
       setShowLogoutModal(false);
-
-      window.location.href = '/';
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
     }
   }
 
-  const handleProfile = async () => {
-    setProfile(!profile);
+  const handleProfile = () => {
+    setProfileOpen((prev) => !prev);
+  }
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setProfileOpen(false);
   }
 
   return (
-    <header className={`fixed top-0 w-full h-16 z-50 transition-colors px-10 flex justify-between bg-white border-b border-black/30 ${scrolled
+    <header className={`fixed top-0 w-full h-14 md:h-16 z-50 transition-colors px-4 md:px-10 flex items-center justify-between bg-white border-b border-black/30 ${scrolled
       ? "backdrop-blur-xs bg-white/50"
       : "bg-transparent"
       }`}>
-      <Link to='/' className="flex items-center">
+      <Link
+        to="/"
+        className="flex items-center"
+        onClick={closeMenu}
+      >
         <img
           src={logo}
           alt="logo"
-          className="h-12 w-12"
+          className="h-8 w-8 md:h-12 md:w-12"
         />
-        <h1 className="font-merriweather text-2xl font-semibold text-primary">Blog<span className="text-secondary">Tomasu</span></h1>
+        <h1 className="font-merriweather text-lg md:text-2xl font-semibold text-primary">Blog<span className="text-secondary">Tomasu</span></h1>
       </Link>
 
-      <nav className="flex items-center gap-5">
-        <Link to='/' className="font-intertight text-black/50 font-bold text-sm">
+      {/* Desktop nav */}
+      <nav className="hidden md:flex items-center gap-5">
+        <Link to="/" className="font-intertight text-black/50 font-bold text-sm">
           Home
         </Link>
-        <Link to='/create' className="font-intertight text-black/50 font-bold text-sm">
+        <Link to="/create" className="font-intertight text-black/50 font-bold text-sm">
           Write
         </Link>
         {!user ? (
           <div className="flex items-center gap-5">
-            <Link to='/login' className="font-intertight text-black/50 font-bold text-sm">
+            <Link to="/login" className="font-intertight text-black/50 font-bold text-sm">
               Login
             </Link>
-            <Link to='/signup' className="font-intertight text-white font-bold text-sm bg-primary px-4 py-3 rounded-lg hover:bg-primary/90">
+            <Link to="/signup" className="font-intertight text-white font-bold text-sm bg-primary px-4 py-3 rounded-lg hover:bg-primary/90">
               Get Started
             </Link>
           </div>
@@ -94,7 +101,7 @@ function Navbar() {
             </button>
           </div>
         )}
-        {profile && (
+        {profileOpen && (
           <div className="absolute right-10 top-14 w-40 bg-white shadow-lg rounded-lg border py-2 animate-fadeIn">
             <Link
               to="/profile"
@@ -113,6 +120,54 @@ function Navbar() {
           </div>
         )}
       </nav>
+
+      {/* Mobile nav */}
+      <button
+        type="button"
+        className="md:hidden p-2 rounded-lg text-primary hover:bg-primary/10"
+        aria-label="Toggle navigation menu"
+        onClick={() => setMenuOpen((prev) => !prev)}
+      >
+        {menuOpen ? <FaTimes className="text-2xl" /> : <FaBars className="text-2xl" />}
+      </button>
+
+      {/* Mobile sheet */}
+      {menuOpen && (
+        <div className="absolute left-0 top-14 w-full bg-white border-b shadow-md md:hidden animate-fadeIn">
+          <nav className="flex flex-col gap-3 px-4 py-4 font-intertight text-black/70 font-bold">
+            <Link to="/" onClick={closeMenu}>
+              Home
+            </Link>
+            <Link to="/create" onClick={closeMenu}>
+              Write
+            </Link>
+
+            {!user ? (
+              <>
+                <Link to="/login" onClick={closeMenu}>
+                  Login
+                </Link>
+                <Link to="/create" className="text-white bg-primary py-2 rounded-lg text-center hover:primary/90" onClick={closeMenu}>
+                  Get Started
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/profile" onClick={closeMenu}>
+                  Profile
+                </Link>
+                <button
+                  type="button"
+                  className="text-red-500 text-left"
+                >
+                  Logout
+                </button>
+              </>
+            )}
+          </nav>
+        </div>
+      )}
+
       <ConfirmModal
         isOpen={showLogoutModal}
         title="Logout"
@@ -123,7 +178,7 @@ function Navbar() {
         onConfirm={handleLogout}
         onCancel={() => setShowLogoutModal(false)}
       />
-    </header>
+    </header >
   )
 }
 

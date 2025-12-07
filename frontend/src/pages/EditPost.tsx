@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import toast from 'react-hot-toast';
-import TipTapEditor from '../components/TipTapEditor';
-import { apiUrl } from '../utils/api';
+import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import TipTapEditor from "../components/TipTapEditor";
+import { apiUrl } from "../utils/api";
+import ConfirmModal from "../components/ui/confirmModal";
 
 function EditPost() {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const user = JSON.parse(localStorage.getItem("user") || "null");
   const { id } = useParams<{ id: string }>();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [originalTitle, setOriginalTitle] = useState('');
-  const [originalContent, setOriginalContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [originalTitle, setOriginalTitle] = useState("");
+  const [originalContent, setOriginalContent] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -48,71 +50,83 @@ function EditPost() {
     setLoading(true);
 
     if (!user) {
-      toast.error('Login first');
+      toast.error("Login first");
       setLoading(false);
       return;
     }
 
     if (!title || !content) {
-      toast.error('Please fill all the information');
+      toast.error("Please fill all the information");
       setLoading(false);
       return;
     }
 
     if (originalTitle === title && originalContent === content) {
-      toast.error('No changes detected');
+      toast.error("No changes detected");
       setLoading(false);
-      return
+      return;
     }
 
     try {
       const res = await fetch(`${apiUrl}/api/blogs/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer${user.token}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": `Bearer${user.token}`,
         },
         body: JSON.stringify({
           title,
           content,
         })
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.message || 'Try Again');
+        toast.error(data.message || "Try Again");
         setLoading(false);
         return
-      }
+      };
 
-      toast.success('Blog updated!');
+      toast.success("Blog updated!");
 
       nav(`/blogs/${id}`);
     } catch (error) {
       console.log(error);
       setLoading(false);
-    }
+    };
 
     setLoading(false);
-  }
+  };
+
+  const handleCancel = () => {
+    if (originalTitle === title && originalContent === content) {
+      setShowCancelModal(true);
+    };
+    nav(`/blogs/${id}`);
+  };
+
+  const confirmCancel = () => {
+    setShowCancelModal(false);
+    nav(`/blogs/${id}`);
+  };
 
   return (
     <main>
       <Navbar />
-      <section className="flex px-10 items-center pt-16 justify-center">
+      <section className="flex px-4 md:px-10 items-center pt-16 justify-center">
         <form
           onSubmit={handleSubmit}
-          className="border border-neutral-500 rounded-lg p-5 w-1/2 space-y-5 my-16"
+          className="border border-neutral-500 rounded-lg p-5 w-full md:w-1/2 space-y-5 my-16"
         >
           <div>
-            <h1 className="font-bold font-merriweather text-4xl">Create a New Blog</h1>
-            <p className="font-intertight text-lg text-black/50">Share your thoughts in the world</p>
+            <h1 className="font-bold font-merriweather text-xl md:text-4xl">Create a New Blog</h1>
+            <p className="font-intertight text-sm md:text-lg text-black/50">Share your thoughts in the world</p>
           </div>
 
           <div>
-            <label className="font-intertight text-lg">Title</label>
+            <label className="font-intertight text-sm md:text-lg">Title</label>
             <input
               type="text"
               value={title}
@@ -123,7 +137,7 @@ function EditPost() {
           </div>
 
           <div>
-            <label className="font-intertight text-lg">Content</label>
+            <label className="font-intertight text-sm md:text-lg">Content</label>
             <TipTapEditor content={content} setContent={setContent} />
           </div>
 
@@ -132,15 +146,27 @@ function EditPost() {
               type="submit"
               className="items-center bg-primary py-3 px-5 rounded-lg mt-2 font-bold font-intertight text-sm text-white hover:bg-primary/90"
             >
-              {loading ? 'Updating...' : 'Update blog'}
+              {loading ? "Updating..." : "Update blog"}
             </button>
-            <Link to='/' className="items-center py-3 px-5 rounded-lg mt-2 font-bold font-intertight text-sm border border-black/30 hover:bg-gray-200">
+            <button
+              type="button"
+              className="items-center py-3 px-5 rounded-lg mt-2 font-bold font-intertight text-sm border border-black/30 hover:bg-gray-200"
+              onClick={handleCancel}
+            >
               Cancel
-            </Link>
+            </button>
           </div>
-
         </form>
       </section>
+
+      <ConfirmModal 
+        isOpen={showCancelModal}
+        title="Cancel"
+        message="Are you sure you want to cancel?"
+        isDangerous={true}
+        onConfirm={confirmCancel}
+        onCancel={() => setShowCancelModal(false)}
+      />
     </main>
   )
 }

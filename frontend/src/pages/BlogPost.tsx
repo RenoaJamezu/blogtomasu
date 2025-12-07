@@ -102,16 +102,16 @@ function BlogPost() {
   return (
     <main className="min-h-screen w-full flex justify-center">
       <Navbar />
-      <section className="py-16 w-2/4">
+      <section className="py-16 px-4 md:w-2/4">
         <article className="w-full items-center mt-10">
           <h1 className="font-merriweather text-4xl font-bold mb-3">{blog.title}</h1>
-          <div className="text-sm text-gray-500 mb-6 flex font-intertight items-center justify-between">
+          <div className="text-sm text-gray-500 mb-6 md:flex font-intertight items-center justify-between space-y-4">
             <div className="flex">
               <span className="mr-4 flex items-center gap-1"><FaUser />{blog.author.name}</span>
               <span className="flex items-center gap-1"><FaCalendarAlt />{formattedDate}</span>
             </div>
 
-            {/* if owner show edit button */}
+            {/* if owner show edit and delete button */}
             {isOwner && (
               <div className="flex gap-2">
                 <button
@@ -135,6 +135,7 @@ function BlogPost() {
           <div className="prose tiptap-content max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }} />
         </article>
       </section>
+
       <ConfirmModal
         isOpen={showDeleteModal}
         title="Delete Blog"
