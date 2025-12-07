@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
 import ConfirmModal from "../components/ui/confirmModal";
+import { apiUrl } from "../utils/api";
 
 interface Blog {
   _id: string;
@@ -30,7 +31,7 @@ function BlogPost() {
     const fetchBlog = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/blogs/${id}`);
+        const res = await fetch(`${apiUrl}/api/blogs/${id}`);
         const data = await res.json();
         if (!res.ok) {
           toast.error(data?.message || "Failed to load blog");
@@ -57,7 +58,7 @@ function BlogPost() {
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`/api/blogs/${id}`, {
+      const res = await fetch(`${apiUrl}/api/blogs/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

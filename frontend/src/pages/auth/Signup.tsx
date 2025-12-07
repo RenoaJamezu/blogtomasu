@@ -2,6 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaAngleLeft } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { apiUrl } from "../../utils/api";
 
 function Signup() {
   const [name, setName] = useState('')
@@ -32,7 +33,7 @@ function Signup() {
     }
 
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch(`${apiUrl}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

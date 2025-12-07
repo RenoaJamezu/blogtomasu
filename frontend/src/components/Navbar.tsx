@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
 import { FaUserCircle } from "react-icons/fa";
 import ConfirmModal from "./ui/confirmModal";
+import { apiUrl } from "../utils/api";
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -21,7 +22,7 @@ function Navbar() {
   const handleLogout = async () => {
 
     try {
-      const res = await fetch('/api/auth/logout', {
+      const res = await fetch(`${apiUrl}/api/auth/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

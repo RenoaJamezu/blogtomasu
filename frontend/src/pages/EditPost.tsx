@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast';
 import TipTapEditor from '../components/TipTapEditor';
+import { apiUrl } from '../utils/api';
 
 function EditPost() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -19,7 +20,7 @@ function EditPost() {
     const fetchBlog = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/blogs/${id}`);
+        const res = await fetch(`${apiUrl}/api/blogs/${id}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -65,7 +66,7 @@ function EditPost() {
     }
 
     try {
-      const res = await fetch(`/api/blogs/${id}`, {
+      const res = await fetch(`${apiUrl}/api/blogs/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

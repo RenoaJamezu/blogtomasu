@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import TipTapEditor from '../components/TipTapEditor';
 import toast from 'react-hot-toast';
+import { apiUrl } from '../utils/api';
 
 function CreateBlog() {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -28,7 +29,7 @@ function CreateBlog() {
     }
 
     try {
-      const res = await fetch('/api/blogs', {
+      const res = await fetch(`${apiUrl}/api/blogs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
