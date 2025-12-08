@@ -139,8 +139,8 @@ export async function login(req: Request, res: Response) {
 
     res.cookie("accessToken", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: process.env["NODE_ENV"] === "production" ? "none" : "strict",
+      secure: process.env["NODE_ENV"] === "production",
+      sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
       domain: process.env["NODE_ENV"] === "production" ? ".onrender.com" : undefined,
       maxAge: 1000 * 60 * 60 * 24,
     });
@@ -155,8 +155,8 @@ export async function logout(req: AuthRequest, res: Response) {
   try {
     res.clearCookie("accessToken", {
       httpOnly: true,
-      secure: true,
-      sameSite: process.env["NODE_ENV"] === "production" ? "none" : "strict",
+      secure: process.env["NODE_ENV"] === "production",
+      sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
       domain: process.env["NODE_ENV"] === "production" ? ".onrender.com" : undefined,
     });
 
