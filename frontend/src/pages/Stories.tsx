@@ -31,7 +31,7 @@ function Stories() {
           return;
         }
         setLoading(false);
-        setBlogs(data.blogs);
+        setBlogs(data.blogs.slice(0, 3));
       } catch (error) {
         console.log(error);
         toast.error("Failed to load blogs.");
