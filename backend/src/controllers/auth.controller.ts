@@ -139,9 +139,8 @@ export async function login(req: Request, res: Response) {
 
     res.cookie("accessToken", token, {
       httpOnly: true,
-      secure: process.env["NODE_ENV"] === "production",
-      sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
-      domain: process.env["NODE_ENV"] === "production" ? ".onrender.com" : undefined,
+      secure: true,
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24,
     });
 
@@ -155,9 +154,8 @@ export async function logout(req: AuthRequest, res: Response) {
   try {
     res.clearCookie("accessToken", {
       httpOnly: true,
-      secure: process.env["NODE_ENV"] === "production",
-      sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
-      domain: process.env["NODE_ENV"] === "production" ? ".onrender.com" : undefined,
+      secure: true,
+      sameSite: "none",
     });
 
     return res.status(200).json({ message: "Logged out successfully" });
@@ -172,7 +170,7 @@ export async function getMe(req: AuthRequest, res: Response) {
   };
 
   const user = await User.findById(req.userId).select("name email");
-  return res.status(200).json({
+  return res.status(200).json({ 
     user,
     isValid: true
   });
