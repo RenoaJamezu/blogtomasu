@@ -5,9 +5,10 @@ import toast from "react-hot-toast";
 import TipTapEditor from "../components/TipTapEditor";
 import { apiUrl } from "../utils/api";
 import ConfirmModal from "../components/ui/confirmModal";
+import { useAuth } from "../hooks/useAuth";
 
 function EditPost() {
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const { user } = useAuth();
   const { id } = useParams<{ id: string }>();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -101,9 +102,10 @@ function EditPost() {
   };
 
   const handleCancel = () => {
-    if (originalTitle === title && originalContent === content) {
+    if (originalTitle !== title || originalContent !== content) {
       setShowCancelModal(true);
-    };
+      return;
+    }
     nav(`/blogs/${id}`);
   };
 
@@ -159,7 +161,7 @@ function EditPost() {
         </form>
       </section>
 
-      <ConfirmModal 
+      <ConfirmModal
         isOpen={showCancelModal}
         title="Cancel"
         message="Are you sure you want to cancel?"

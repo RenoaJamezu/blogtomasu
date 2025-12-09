@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { apiUrl } from "../../utils/api";
+import { useAuth } from "../../hooks/useAuth";
 
 function Login() {
+  const { refreshAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -44,11 +46,8 @@ function Login() {
       }
 
       toast.success("Logged in");
-
-      // store information to local storage
-      localStorage.setItem("user", JSON.stringify({ email }));
-
-      nav("/")
+      await refreshAuth();
+      nav("/");
     } catch (error) {
       console.log(error);
       setLoading(false)

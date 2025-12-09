@@ -1,18 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import ConfirmModal from "./ui/confirmModal";
-import { apiUrl } from "../utils/api";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 function Navbar() {
-  const { isValid } = useAuth();
+  const { isValid, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
+  const nav = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -23,28 +23,12 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch(`${apiUrl}/api/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        }
-      });
-
-      const json = await res.json();
-
-      if (!res.ok) {
-        toast.error(json.message);
-        return;
-      }
-
-      toast.success("Logout successfully");
-      localStorage.removeItem("user");
-      setShowLogoutModal(false);
-      window.location.href = "/";
-    } catch (error) {
-      console.log(error);
+      await logout();
+      setShowLogoutModal(false)
+      closeMenu();
+      nav("/");
+    } finally {
+      setLogoutLoading(false)
     }
   }
 
@@ -177,6 +161,7 @@ function Navbar() {
         confirmText="Logout"
         cancelText="Cancel"
         isDangerous={true}
+        isLoading={logoutLoading}
         onConfirm={handleLogout}
         onCancel={() => setShowLogoutModal(false)}
       />

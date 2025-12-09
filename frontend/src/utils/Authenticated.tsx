@@ -1,10 +1,10 @@
 import { Outlet, Navigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 const Authenticated = () => {
   const { isValid, loading } = useAuth();
   if (loading) return <div>Loading...</div>;
-  
+
   return !isValid ? <Outlet /> : <Navigate to='/' />
 }
 

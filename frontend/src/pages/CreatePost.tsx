@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import TipTapEditor from "../components/TipTapEditor";
 import toast from "react-hot-toast";
 import { apiUrl } from "../utils/api";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 function CreateBlog() {
   const { isValid } = useAuth();

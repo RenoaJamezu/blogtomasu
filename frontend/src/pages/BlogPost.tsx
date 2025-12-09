@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
 import ConfirmModal from "../components/ui/confirmModal";
 import { apiUrl } from "../utils/api";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 interface Blog {
   _id: string;
@@ -20,7 +20,7 @@ interface Blog {
 }
 
 function BlogPost() {
-  const user = useAuth();
+  const { user } = useAuth();
   const { id } = useParams<{ id: string }>();
   const [blog, setBlog] = useState<Blog>();
   const [loading, setLoading] = useState(true);
@@ -51,7 +51,7 @@ function BlogPost() {
     fetchBlog();
   }, [id]);
 
-  const isOwner = Boolean(user?.user?.email === blog?.author.email);
+  const isOwner = Boolean(user?.email === blog?.author.email);
 
   const handleEdit = async () => {
     nav(`/blogs/${id}/edit`);
