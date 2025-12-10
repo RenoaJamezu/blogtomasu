@@ -5,8 +5,10 @@ import TipTapEditor from "../components/TipTapEditor";
 import toast from "react-hot-toast";
 import { apiUrl } from "../utils/api";
 import { useAuth } from "../hooks/useAuth";
+import { useBlogs } from "../hooks/useBlogs";
 
 function CreateBlog() {
+  const { fetchBlogs } = useBlogs();
   const { isValid } = useAuth();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -51,7 +53,7 @@ function CreateBlog() {
       }
 
       toast.success("Blog posted!");
-
+      fetchBlogs();
       nav("/");
     } catch (error) {
       console.log(error);

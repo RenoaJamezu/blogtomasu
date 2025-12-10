@@ -3,8 +3,10 @@ import Navbar from '../components/Navbar'
 import { IoLocationOutline } from 'react-icons/io5'
 import { FaCalendarAlt } from 'react-icons/fa'
 import { CiSettings } from 'react-icons/ci'
+import { useAuth } from '../hooks/useAuth'
 
 function Profile() {
+  const { user } = useAuth();
   const [settings, setSettings] = useState(false);
 
   const handleEditProfile = async () => {
@@ -20,8 +22,8 @@ function Profile() {
           <div className="space-y-3 w-full">
             <div className="flex justify-between">
               <div>
-                <h1 className="font-merriweather font-bold text-2xl">Name</h1>
-                <h3 className="font-intertight text-lg">@name</h3>
+                <h1 className="font-merriweather font-bold text-2xl">{user?.name}</h1>
+                <h3 className="font-intertight text-lg">{user?.email}</h3>
               </div>
               <button
                 type="button"

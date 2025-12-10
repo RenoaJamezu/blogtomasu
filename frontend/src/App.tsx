@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast"
 
 import ProtectedRoutes from "./utils/ProtectedRoutes"
 import Authenticated from "./utils/Authenticated"
+import AllBlogs from "./pages/AllBlogs"
 
 // Lazy load route components
 const Index = lazy(() => import("./pages/Index"))
@@ -34,6 +35,7 @@ function App() {
             {/* public routes */}
             <Route path="/" element={<Index />} />
             <Route path="/blogs/:id" element={<BlogPost />} />
+            <Route path="/blogs" element={<AllBlogs />} />
 
             {/* authenticated */}
             <Route element={<Authenticated />} >

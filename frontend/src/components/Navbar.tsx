@@ -67,6 +67,9 @@ function Navbar() {
         <Link to="/create" className="font-intertight text-black/50 font-bold text-sm">
           Write
         </Link>
+        <Link to="/blogs" className="font-intertight text-black/50 font-bold text-sm">
+          Blogs
+        </Link>
         {isValid ? (
           <div className="flex items-center">
             <button
@@ -126,7 +129,9 @@ function Navbar() {
             <Link to="/create" onClick={closeMenu}>
               Write
             </Link>
-
+            <Link to="/blogs" onClick={closeMenu}>
+              Blogs
+            </Link>
             {isValid ? (
               <>
                 <Link to="/profile" onClick={closeMenu}>
