@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/auth.middleware";
 import Blog from "../models/blog.model";
+import {
+  applyFilters,
+  applyPagination,
+  applySearch
+} from "../utils/query.helper";
 
 export async function createBlog(req: AuthRequest, res: Response) {
   try {
@@ -30,11 +35,35 @@ export async function createBlog(req: AuthRequest, res: Response) {
 
 export async function listBlogs(req: Request, res: Response) {
   try {
-    const blogs = await Blog.find()
+    const resultPerPage = Number(req.query["limit"]) || 6;
+
+    let query = Blog.find()
       .populate("author", "name email")
       .sort({ createdAt: -1 });
 
-    return res.status(200).json({ blogs });
+    query = applySearch(query, req.query, ["title"]);
+    query = applyFilters(query, req.query);
+
+    const totalItems = await query.clone().countDocuments();
+
+    const totalPages = Math.ceil(totalItems / resultPerPage);
+    const currentPage = Number(req.query["page"]) || 1;
+
+    if (totalPages > 0 && currentPage > totalPages) {
+      return res.status(404).json({ message: "Page does not exist" });
+    };
+
+    const paginatedQuery = applyPagination(query, req.query, resultPerPage);
+
+    const blogs = await paginatedQuery;
+
+    return res.status(200).json({
+      blogs,
+      totalItems,
+      resultPerPage,
+      totalPages,
+      currentPage,
+    });
   } catch (error) {
     return res.status(500).json({ message: "Failed to list blogs" });
   };
