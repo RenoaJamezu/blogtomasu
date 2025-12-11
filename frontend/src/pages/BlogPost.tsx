@@ -82,13 +82,6 @@ function BlogPost() {
     }
   }
 
-  if (loading) return (
-    <main className="h-screen">
-      <Navbar />
-      <div className="pt-16 px-10">Loading...</div>
-    </main>
-  );
-
   if (!blog) return (
     <main className="h-screen">
       <Navbar />
@@ -104,37 +97,55 @@ function BlogPost() {
     <main className="min-h-screen w-full flex justify-center">
       <Navbar />
       <section className="py-16 px-4 w-full md:w-2/4">
-        <article className="w-full items-center mt-10">
-          <h1 className="font-merriweather text-xl md:text-4xl font-bold mb-3">{blog.title}</h1>
-          <div className="text-xs md:text-sm text-gray-500 mb-6 md:flex font-intertight items-center justify-between space-y-4">
-            <div className="flex">
-              <span className="mr-4 flex items-center gap-1"><FaUser />{blog.author.name}</span>
-              <span className="flex items-center gap-1"><FaCalendarAlt />{formattedDate}</span>
+        {loading ? (
+          <>
+            <div className="p-4 bg-gray animate-pulse h-56 md:h-66">
+              <div className="h-12 bg-gray-300 rounded mt-4 w-3/4"></div>
+              <div className="h-40 bg-gray-300 rounded mt-4"></div>
+              <div className="h-4 bg-gray-300 rounded mt-4 w-3/4"></div>
+              <div className="h-40 bg-gray-300 rounded mt-4"></div>
+              <div className="h-4 bg-gray-300 rounded mt-2 w-1/2"></div>
+              <div className="h-40 bg-gray-300 rounded mt-4"></div>
+              <div className="h-4 bg-gray-300 rounded mt-4 w-4/5"></div>
+              <div className="h-40 bg-gray-300 rounded mt-4"></div>
             </div>
+          </>
+        ) : (
+          <>
+            <article className="w-full items-center mt-10">
+              <h1 className="font-merriweather text-xl md:text-4xl font-bold mb-3">{blog.title}</h1>
+              <div className="text-xs md:text-sm text-gray-500 mb-6 md:flex font-intertight items-center justify-between space-y-4">
+                <div className="flex">
+                  <span className="mr-4 flex items-center gap-1"><FaUser />{blog.author.name}</span>
+                  <span className="flex items-center gap-1"><FaCalendarAlt />{formattedDate}</span>
+                </div>
 
-            {/* if owner show edit and delete button */}
-            {isOwner && (
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={handleEdit}
-                  className="px-3 py-2 border text-black/80 rounded hover:bg-gray-500/20"
-                >
-                  Edit blog
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowDeleteModal(true)}
-                  className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-500/80"
-                >
-                  Delete blog
-                </button>
+                {/* if owner show edit and delete button */}
+                {isOwner && (
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={handleEdit}
+                      className="px-3 py-2 border text-black/80 rounded hover:bg-gray-500/20"
+                    >
+                      Edit blog
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowDeleteModal(true)}
+                      className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-500/80"
+                    >
+                      Delete blog
+                    </button>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <hr className="text-black/50" /><br />
-          <div className="prose tiptap-content max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }} />
-        </article>
+              <hr className="text-black/50" /><br />
+              <div className="prose tiptap-content max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }} />
+            </article>
+          </>
+        )}
+
       </section>
 
       <ConfirmModal

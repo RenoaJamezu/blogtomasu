@@ -4,7 +4,7 @@ import BlogCard from '../components/ui/blogCard';
 import { useEffect } from 'react';
 
 function AllBlogs() {
-  const { blogs, page, setPage, totalPages } = useBlogs();
+  const { blogs, page, setPage, totalPages, loading } = useBlogs();
 
   useEffect(() => {
     setPage(1);
@@ -22,10 +22,24 @@ function AllBlogs() {
         </span>
 
         {/* all blogs */}
-        <div className="py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogs.map((item) => (
-            <BlogCard key={item._id} blog={item} />
-          ))}
+        <div className="py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+          {loading ? (
+            <>
+              {blogs.map(() => (
+                <div className="border border-black/50 rounded-lg p-4 bg-gray animate-pulse h-56 md:h-66">
+                  <div className="h-40 bg-gray-300 rounded"></div>
+                  <div className="h-4 bg-gray-300 rounded mt-4 w-3/4"></div>
+                  <div className="h-4 bg-gray-300 rounded mt-2 w-1/2"></div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              {blogs.map((item) => (
+                <BlogCard key={item._id} blog={item} />
+              ))}
+            </>
+          )}
         </div>
 
         {/* pagination */}

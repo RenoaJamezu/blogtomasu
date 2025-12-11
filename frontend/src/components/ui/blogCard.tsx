@@ -22,7 +22,7 @@ function BlogCard({ blog }: { blog: BlogCardProps}) {
 
   return (
     <Link to={`/blogs/${blog._id}`} className="block">
-      <article className="bg-white rounded-2xl border border-black/50 p-5 shadow-sm overflow-hidden hover:shadow-md transition">
+      <article className="bg-white rounded-lg border border-black/50 p-5 shadow-sm overflow-hidden hover:shadow-md hover:scale-105 transition h-56 md:h-66">
         <h2 className="text-lg md:text-2xl font-merriweather font-bold mb-2 line-clamp-2">{blog.title}</h2>
         <div className="flex items-center text-gray-500 mb-3 space-x-5">
           <span className="flex items-center gap-1 text-xs md:text-sm font-intertight">
