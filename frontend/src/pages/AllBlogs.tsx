@@ -27,9 +27,9 @@ function AllBlogs() {
             <>
               {blogs.map(() => (
                 <div className="border border-black/50 rounded-lg p-4 bg-gray animate-pulse h-56 md:h-66">
-                  <div className="h-40 bg-gray-300 rounded"></div>
-                  <div className="h-4 bg-gray-300 rounded mt-4 w-3/4"></div>
+                  <div className="h-12 bg-gray-300 rounded mt-4 w-5/6"></div>
                   <div className="h-4 bg-gray-300 rounded mt-2 w-1/2"></div>
+                  <div className="h-32 bg-gray-300 rounded mt-2"></div>
                 </div>
               ))}
             </>
