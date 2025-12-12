@@ -24,6 +24,10 @@ export async function sendOTPEmail(email: string, otp: string, subject: string =
       pass: process.env["GMAIL_PASS"]
     }
   });
+  
+  transporter.verify((err, success) => {
+    console.log("SMTP verify:", err, success);
+  });
 
   try {
     const result = await transporter.sendMail({
