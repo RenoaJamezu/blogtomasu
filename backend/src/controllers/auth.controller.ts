@@ -167,7 +167,7 @@ export async function getMe(req: AuthRequest, res: Response) {
     return res.status(401).json({ message: "Unauthorized" });
   };
 
-  const user = await User.findById(req.userId).select("name email");
+  const user = await User.findById(req.userId).select("name email description location createdAt");
   return res.status(200).json({
     user,
     isValid: true

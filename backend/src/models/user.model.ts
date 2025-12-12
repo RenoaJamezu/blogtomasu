@@ -7,6 +7,8 @@ export interface IUser extends Document {
   otp: string;
   otpExpire: Date;
   isVerified: boolean;
+  description: string;
+  location: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -38,6 +40,12 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    description: { 
+      type: String,
+    },
+    location: {
+      type: String,
     },
   },
   {
