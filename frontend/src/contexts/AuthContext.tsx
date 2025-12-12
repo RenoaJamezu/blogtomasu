@@ -2,9 +2,12 @@ import { createContext, useCallback, useEffect, useMemo, useState, type ReactNod
 import { apiUrl } from "../utils/api";
 
 interface User {
-  id: string;
+  _id: string;
   email: string;
   name: string;
+  description: string;
+  location: string;
+  createdAt: string;
 };
 
 interface AuthContextType {

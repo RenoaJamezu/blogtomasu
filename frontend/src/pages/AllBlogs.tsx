@@ -4,11 +4,12 @@ import BlogCard from '../components/ui/blogCard';
 import { useEffect } from 'react';
 
 function AllBlogs() {
-  const { blogs, page, setPage, totalPages, loading } = useBlogs();
+  const { blogs, page, setPage, totalPages, loading, setAuthorId } = useBlogs();
 
   useEffect(() => {
+      setAuthorId("");
     setPage(1);
-  }, [setPage]);
+  }, [setPage, setAuthorId]);
 
   return (
     <main>
@@ -27,9 +28,9 @@ function AllBlogs() {
             <>
               {blogs.map(() => (
                 <div className="border border-black/50 rounded-lg p-4 bg-gray animate-pulse h-56 md:h-66">
-                  <div className="h-12 bg-gray-300 rounded mt-4 w-5/6"></div>
-                  <div className="h-4 bg-gray-300 rounded mt-2 w-1/2"></div>
-                  <div className="h-32 bg-gray-300 rounded mt-2"></div>
+                  <div className="h-10 md:h-12 bg-gray-300 rounded mt-4 w-5/6"></div>
+                  <div className="h-4 md:h-4 bg-gray-300 rounded mt-2 w-1/2"></div>
+                  <div className="h-24 md:h-32 bg-gray-300 rounded mt-2"></div>
                 </div>
               ))}
             </>

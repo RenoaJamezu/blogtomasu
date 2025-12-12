@@ -27,6 +27,8 @@ interface BlogContextType {
   setFilters: (filters: Record<string, string>) => void;
   limit: number;
   setLimit: (limit: number) => void;
+  authorId: string;
+  setAuthorId: (id: string) => void;
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -39,6 +41,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
   const [limit, setLimit] = useState(6);
   const [keyword, setKeyword] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [authorId, setAuthorId] = useState("");
 
   const fetchBlogs = useCallback(async () => {
     try {
@@ -48,6 +51,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
       params.append("page", page.toString());
       params.append("limit", limit.toString());
       if (keyword) params.append("keyword", keyword);
+      if (authorId) params.append("author", authorId);
       Object.entries(filters).forEach(([key, value]) => {
         if (value) params.append(key, value);
       });
@@ -70,7 +74,7 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, keyword, filters]);
+  }, [page, limit, keyword, filters, authorId]);
 
   useEffect(() => {
     fetchBlogs();
@@ -88,8 +92,10 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     filters,
     setFilters,
     limit,
-    setLimit
-  }), [blogs, loading, fetchBlogs, page, totalPages, keyword, filters, limit]);
+    setLimit,
+    authorId,
+    setAuthorId
+  }), [blogs, loading, fetchBlogs, page, totalPages, keyword, filters, limit, authorId]);
 
   return (
     <BlogContext.Provider value={value}>

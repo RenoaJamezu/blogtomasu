@@ -5,7 +5,6 @@ import { Toaster } from "react-hot-toast"
 
 import ProtectedRoutes from "./utils/ProtectedRoutes"
 import Authenticated from "./utils/Authenticated"
-import AllBlogs from "./pages/AllBlogs"
 
 // Lazy load route components
 const Index = lazy(() => import("./pages/Index"))
@@ -17,6 +16,7 @@ const Stories = lazy(() => import("./pages/Stories"))
 const CreateBlog = lazy(() => import("./pages/CreatePost"))
 const BlogPost = lazy(() => import("./pages/BlogPost"))
 const EditPost = lazy(() => import("./pages/EditPost"))
+const AllBlogs = lazy(() => import("./pages/AllBlogs"))
 
 // Loading fallback component
 const PageLoader = () => (

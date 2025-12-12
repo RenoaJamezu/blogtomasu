@@ -97,7 +97,10 @@ function Navbar() {
             >
               Profile
             </Link>
-
+            {/* 
+            // todo: add settings page in future
+            // todo: change password
+            */}
             <button
               type="button"
               onClick={() => setShowLogoutModal(true)}

@@ -104,6 +104,9 @@ function CreateBlog() {
             </Link>
           </div>
 
+          {/* 
+          //todo create save draft
+          */}
         </form>
       </section>
     </main>
