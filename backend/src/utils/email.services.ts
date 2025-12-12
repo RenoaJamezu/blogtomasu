@@ -1,33 +1,26 @@
-
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import dotenv from "dotenv";
 
 dotenv.config();
 
+// email transporter set up
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  pool: true,
+  maxConnections: 1,
+  maxMessages: 5,
+  auth: {
+    user: process.env["GMAIL_USER"],
+    pass: process.env["GMAIL_PASS"]
+  }
+});
+
 // generate otp
 export const generateOTP = () => crypto.randomInt(100000, 999999).toString();
 
 // send OTP email
 export async function sendOTPEmail(email: string, otp: string, subject: string = "OTP Verification") {
-
-  // email transporter set up
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    port: 456,
-    secure: true,
-    // pool: true,
-    // maxConnections: 1,
-    // maxMessages: 5,
-    auth: {
-      user: process.env["GMAIL_USER"],
-      pass: process.env["GMAIL_PASS"]
-    }
-  });
-  
-  transporter.verify((err, success) => {
-    console.log("SMTP verify:", err, success);
-  });
 
   try {
     const result = await transporter.sendMail({
