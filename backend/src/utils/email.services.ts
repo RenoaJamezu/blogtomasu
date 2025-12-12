@@ -8,9 +8,9 @@ dotenv.config();
 // email transporter set up
 const transporter = nodemailer.createTransport({
   service: "gmail",
-  pool: true,
-  maxConnections: 1,
-  maxMessages: 5,
+  // pool: true,
+  // maxConnections: 1,
+  // maxMessages: 5,
   auth: {
     user: process.env["GMAIL_USER"],
     pass: process.env["GMAIL_PASS"]
