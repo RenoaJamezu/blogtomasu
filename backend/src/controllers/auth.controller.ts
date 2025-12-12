@@ -24,11 +24,9 @@ export async function signup(req: Request, res: Response) {
     const otp = generateOTP();
     const otpExpire = new Date(Date.now() + 10 * 60 * 1000);
 
-    try {
-      await sendOTPEmail(email, otp);
-    } catch (err) {
-      console.error("Failed to send OTP email", err);
-    }
+    sendOTPEmail(email, otp).catch((err) => {
+      console.log("Failed to send OTP email", err);
+    });
 
     await User.create({
       name,
@@ -95,11 +93,8 @@ export async function resendOTP(req: Request, res: Response) {
     user.otpExpire = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
 
-    try {
-      await sendOTPEmail(email, otp, "Resend OTP verification");
-    } catch (err) {
-      console.error("Failed to send OTP email", err);
-    }
+    sendOTPEmail(email, otp, "Resend OTP verification")
+      .catch((err) => console.error("Failed to send OTP:", err));;
 
     return res.status(200).json({ message: "OTP resent successfully" });
   } catch (error) {
@@ -128,11 +123,8 @@ export async function login(req: Request, res: Response) {
       user.otpExpire = new Date(Date.now() + 10 * 60 * 1000);
       await user.save();
 
-      try {
-        await sendOTPEmail(email, otp, "Resend OTP verification");
-      } catch (err) {
-        console.error("Failed to send OTP email", err);
-      }
+      sendOTPEmail(email, otp, "Resend OTP verification")
+        .catch((err) => console.error("Failed to send OTP:", err));;
 
       return res.status(403).json({ message: "Verify email first. OTP sent to email" });
     };

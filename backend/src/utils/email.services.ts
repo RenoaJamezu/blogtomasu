@@ -14,6 +14,8 @@ export async function sendOTPEmail(email: string, otp: string, subject: string =
   // email transporter set up
   const transporter = nodemailer.createTransport({
     service: "gmail",
+    port: 456,
+    secure: true,
     // pool: true,
     // maxConnections: 1,
     // maxMessages: 5,
@@ -22,9 +24,6 @@ export async function sendOTPEmail(email: string, otp: string, subject: string =
       pass: process.env["GMAIL_PASS"]
     }
   });
-
-  console.log("GMAIL_USER:", process.env["GMAIL_USER"]); // Debug log
-  console.log("GMAIL_PASS exists:", !!process.env["GMAIL_PASS"]); // Debug log
 
   try {
     const result = await transporter.sendMail({
