@@ -35,7 +35,7 @@ export async function signup(req: Request, res: Response) {
       // otpExpire
     });
 
-    return res.status(201).json({ message: "User registered. Please verify OTP sent to email" });
+    return res.status(201).json({ message: "User registered." });
   } catch (error) {
     return res.status(500).json({ message: "Registration failed" });
   }
