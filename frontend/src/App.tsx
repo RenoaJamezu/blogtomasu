@@ -37,14 +37,14 @@ function App() {
             <Route path="/blogs/:id" element={<BlogPost />} />
             <Route path="/blogs" element={<AllBlogs />} />
 
-            {/* authenticated */}
+            {/* authenticated user cant access this */}
             <Route element={<Authenticated />} >
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/otp" element={<Otp />} />
             </Route>
 
-            {/* protected routes */}
+            {/* protected routes only authenticated user can access this */}
             <Route element={<ProtectedRoutes />} >
               <Route path="/create" element={<CreateBlog />} />
               <Route path="/blogs/:id/edit" element={<EditPost />} />
